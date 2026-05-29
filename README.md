@@ -44,11 +44,3 @@
 * **반응형 가이드 UI:** 레벨별 가중치를 둔 선형 증폭 공식(`8 + (level * 2.2)`)을 도입하여, 가이드 보드 내에서 체리와 수박의 크기 격차를 시각적으로 명확하게 구분했습니다.
 
 ---
-
-## 🛠️ 설치 및 실행 방법 (Installation & Run)
-
-이 프로젝트는 별도의 서버 구축이나 빌드 과정 없이, 웹 브라우저만 있으면 어디서나 즉시 실행이 가능합니다.
-
-1. 이 저장소의 소스코드를 다운로드하거나 클론합니다.
-   ```bash
-   git clone [https://github.com/your-username/suika-game.git](https://github.com/your-username/suika-game.git)
