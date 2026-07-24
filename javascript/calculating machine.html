@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculating Machine</title>
+    <style>
+        제공해주신 이미지 image_4954fd.png는 전형적인 Windows 11 스타일의 계산기 디자인이네요. 깨끗한 밝은 회색 배경, 둥근 모서리, 그리고 흰색과 파란색 버튼의 조화가 특징입니다.
+
+이 디자인을 그대로 구현하기 위해 CSS를 완전히 새로 작성했습니다. 그리드 레이아웃을 최적화하고, 마우스를 올렸을 때 살짝 어두워지는 효과(Hover)와 버튼 배치까지 이미지와 최대한 비슷하게 맞췄습니다.
+
+🎨 Windows 11 스타일 계산기 코드
+HTML
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows Style Calculator</title>
+    <style>
+        /* 기본 배경 및 폰트 설정 */
+        body {
+            background-color: #f3f3f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif;
+        }
+
+        /* 계산기 본체 (이미지처럼 부드러운 회색조) */
+        .calculator {
+            background-color: #f3f3f3;
+            width: 350px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #dcdcdc;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 상단 텍스트 (표준) */
+        .header {
+            font-size: 20px;
+            font-weight: 600;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* 결과창 영역 */
+        .display-container {
+            text-align: right;
+            padding: 20px 10px;
+        }
+
+        #display {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 48px;
+            font-weight: 600;
+            color: #1a1a1a;
+            text-align: right;
+            outline: none;
+            padding: 0;
+        }
+
+        /* 메모리 라인 (MC, MR...) */
+        .memory-line {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 2px;
+            margin-bottom: 5px;
+        }
+
+        .mem-btn {
+            background: none;
+            border: none;
+            font-size: 12px;
+            color: #555;
+            padding: 10px 0;
+            cursor: pointer;
+        }
+
+                /* 전체 버튼 컨테이너 */
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 4px; /* 줄 사이 간격 */
+        }
+
+        /* 각 줄(Row) 설정 */
+        .row {
+            display: flex;
+            gap: 4px; /* 버튼 사이 간격 */
+        }
+
+        /* 개별 버튼 설정 */
+        .row button {
+            flex: 1; /* 모든 버튼이 동일한 너비를 가짐 */
+            height: 50px;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            background-color: #ffffff;
+            cursor: pointer;
+        }
+
+        /* = 버튼 강조 (선택 사항) */
+        .equal-btn {
+            background-color: #0067c0 !important;
+            color: white;
+        }
+
+        /* 프로그래머 버튼은 상황에 따라 유동적으로 */
+        .programmer-row button {
+            flex: 1;
+        }
+    </style>
+    <script>
+        let currentInput = ""; // 현재 입력값
+        let operator = "";     // 선택된 연산자
+        let firstValue = "";   // 첫 번째 피연산자
+
+
+        window.onload = function() {
+            display = document.getElementById('display');
+        };
+
+        // 화면 업데이트
+        function updateDisplay(content) {
+            display.value = content || "0";
+        }
+
+         // 숫자 및 소수점 추가
+        function appendToDisplay(value) {
+            currentInput += value;
+            updateDisplay(currentInput);
+        }
+
+        // 초기화 (C, CE 공통)
+        function clearDisplay() {
+            currentInput = "";
+            firstValue = "";
+            operator = "";
+            updateDisplay("0");
+        }
+
+        // 지우기 (Backspace)
+        function eraserOperation() {
+            currentInput = currentInput.slice(0, -1); //슬라이싱
+            updateDisplay(currentInput);
+        }
+
+        // 사칙연산 설정
+        function AdditionOperation() { setOperator('+'); }
+        function SubtractionOperation() { setOperator('-'); }
+        function MultipleOperation() { setOperator('*'); }
+        function DivisionOperation() { setOperator('/'); }
+        function remainderOperation() { setOperator('%'); }
+
+        function setOperator(op) {
+            if (currentInput === "") return;
+            firstValue = currentInput;
+            operator = op;
+            currentInput = ""; // 다음 숫자를 받기 위해 비움
+        }
+
+        // 결과 계산 (=)
+        function calculate() {
+            if (!firstValue || !currentInput) return;
+            
+            let result;
+            const num1 = parseFloat(firstValue);
+            const num2 = parseFloat(currentInput);
+
+            switch (operator) {
+                case '+': result = num1 + num2; break;
+                case '-': result = num1 - num2; break;
+                case '*': result = num1 * num2; break;
+                case '/': result = num2 !== 0 ? num1 / num2 : "Error"; break;
+                case '%': result = num1 % num2; break;
+                default: return;
+            }
+
+            currentInput = result
+            
+            
+            
+            
+            
+            
+            .toString();
+            operator = "";
+            firstValue = "";
+            updateDisplay(currentInput);
+        }
+
+        // 소수점 처리
+        function DecimalPoint() {
+            if (!currentInput.includes('.')) {
+                currentInput += ".";
+                updateDisplay(currentInput);
+            }
+        }
+
+        // --- 프로그래머 모드 로직 ---
+
+        function Programer() {
+            // hidden 속성이 있는 버튼들을 모두 찾아 숨김을 해제합니다.
+            const hiddenButtons = document.querySelectorAll('button[hidden]');
+            hiddenButtons.forEach(btn => {
+                btn.hidden = !btn.hidden; // 토글 방식 (누를 때마다 보였다 안 보였다 함)
+            });
+        }
+
+        function BinaryOperation() {
+            if (!currentInput) return;
+            updateDisplay(parseInt(currentInput).toString(2));
+        }
+
+        function OctalOperation() {
+            if (!currentInput) return;
+            updateDisplay(parseInt(currentInput).toString(8));
+        }
+
+        function HexadecimalOperation() {
+            if (!currentInput) return;
+            updateDisplay(parseInt(currentInput).toString(16).toUpperCase());
+        }
+    </script>
+    
+</head>
+<body>
+    <div class="calculator">
+    <!-- 결과창 -->
+    <input type="text" id="display" style="text-align: right;" readonly>
+    
+    <!-- 버튼 영역 -->
+    <div class="buttons">
+    <!-- 첫 번째 줄: 기능 버튼 -->
+    <div class="row">
+        <button onclick="remainderOperation()">%</button>
+        <button onclick="clearDisplay()">CE</button>
+        <button onclick="clearDisplay()">C</button>
+        <button onclick="eraserOperation()">⌫</button>
+    </div>
+
+    <!-- 두 번째 줄: 숫자 7-9 및 곱셈 -->
+    <div class="row">
+        <button onclick="appendToDisplay('7')">7</button>
+        <button onclick="appendToDisplay('8')">8</button>
+        <button onclick="appendToDisplay('9')">9</button>
+        <button onclick="MultipleOperation()">×</button>
+    </div>
+
+    <!-- 세 번째 줄: 숫자 4-6 및 뺄셈 -->
+    <div class="row">
+        <button onclick="appendToDisplay('4')">4</button>
+        <button onclick="appendToDisplay('5')">5</button>
+        <button onclick="appendToDisplay('6')">6</button>
+        <button onclick="SubtractionOperation()">-</button>
+    </div>
+
+    <!-- 네 번째 줄: 숫자 1-3 및 덧셈 -->
+    <div class="row">
+        <button onclick="appendToDisplay('1')">1</button>
+        <button onclick="appendToDisplay('2')">2</button>
+        <button onclick="appendToDisplay('3')">3</button>
+        <button onclick="AdditionOperation()">+</button>
+    </div>
+
+    <!-- 다섯 번째 줄: 소수점, 0, 나눗셈, 결과 -->
+    <div class="row">
+        <button onclick="DecimalPoint()">.</button>
+        <button onclick="appendToDisplay('0')">0</button>
+        <button onclick="DivisionOperation()">÷</button>
+        <button class="equal-btn" onclick="calculate()">=</button>
+    </div>
+
+    <!-- 프로그래머 모드 줄 -->
+    <div class="row programmer-row">
+        <button onclick="Programer()">프로그래머</button>
+        <button hidden onclick="BinaryOperation()">2진수</button>
+        <button hidden onclick="OctalOperation()">8진수</button>
+        <button hidden onclick="HexadecimalOperation()">16진수</button>
+    </div>
+</div>
+</div>
+</body>
+</html>

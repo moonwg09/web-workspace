@@ -1,0 +1,4 @@
+.complete.list-group-item {
+    text-decoration: line-through;
+    color:  gray;
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+
+        let prnNums = function(x,y,...numbers) {
+            // for(let data of arguments){
+            //     console.log(data)
+            // }
+            console.log(`x : ${x} y : ${y}`)
+            console.log(`numbers: ${numbers}`)
+        }
+
+    
+        let nums = [3, 564, 1, 8, 200, 0, 34]
+        prnNums(...nums)
+
+        // // deep copy
+        // let copys = new Array()
+        // for(let i in nums) {
+        //     copys[i] = nums[i]
+        // }
+        /*
+        let copys = nums.map(function(element, index) {
+            //console.log(arguments)
+            return element
+        })
+        */
+
+        let copys = [...nums]
+
+        document.write(`nums : ${nums}<br>`)
+        document.write(`copys : ${copys}<br>`)
+        nums[2] = 10000
+        document.write(`nums : ${nums}<br>`)
+        document.write(`copys : ${copys}<br>`)
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

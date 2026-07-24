@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let btn = document.querySelector('button')
+            btn.addEventListener('click', function() {
+                // 비동기통신
+                fetch('hello.html')
+                .then(function(response) {// 콜백함수
+                    if(response.status != 200) throw new Error("오류발생")
+                    return response.text()
+                })
+                .then(function(data) {
+                    console.log(data)
+                    let responseScope = document.getElementById("responseScope")
+                    responseScope.value += data + '\n'
+                })
+                .catch(function(error) {
+                    console.log(error)
+                    let responseScope = document.getElementById("responseScope")
+                    alert(error)
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+    <button>통신요청</button>
+    <div>
+    <textarea id="responseScope" rows="5" cols="60"></textarea>
+    </div>
+</body>
+</html>
